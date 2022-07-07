@@ -1,4 +1,4 @@
-﻿namespace AuthenticationManager.API.DTO
+﻿namespace AuthenticationManager.DTO.User
 {
     public class UserDto
     {

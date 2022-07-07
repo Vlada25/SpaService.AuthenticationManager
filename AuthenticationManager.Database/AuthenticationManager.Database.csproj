@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuthenticationManager.Domain\AuthenticationManager.Domain.csproj" />
+    <ProjectReference Include="..\AuthenticationManager.Interfaces\AuthenticationManager.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthenticationManager.Domain\AuthenticationManager.Domain.csproj" />
+    <ProjectReference Include="..\AuthenticationManager.DTO\AuthenticationManager.DTO.csproj" />
+  </ItemGroup>
+
 </Project>
