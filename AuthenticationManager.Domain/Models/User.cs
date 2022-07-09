@@ -12,6 +12,5 @@ namespace AuthenticationManager.Domain.Models
         public string Surname { get; set; }
         public string Name { get; set; }
         public string MiddleName { get; set; }
-        public string PhotoId { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace AuthenticationManager.Database
         public AuthManagerDbContext(DbContextOptions options)
             : base(options) { }
 
+        public DbSet<UserPhoto> UserPhotos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
