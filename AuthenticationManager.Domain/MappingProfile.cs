@@ -15,7 +15,6 @@ namespace AuthenticationManager.Domain
         {
             CreateMap<User, UserDto>();
             CreateMap<RegisterUser, User>();
-            CreateMap<LoginUser, User>();
         }
     }
 }

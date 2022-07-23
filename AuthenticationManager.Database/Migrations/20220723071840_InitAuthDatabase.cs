@@ -52,19 +52,6 @@ namespace AuthenticationManager.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPhotos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPhotos", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -173,12 +160,12 @@ namespace AuthenticationManager.Database.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6a39e814-bcc4-4fe1-bc01-baffc7f111c6", "637124f8-4a61-4698-ad16-e58b29e03828", "Admin", "ADMIN" });
+                values: new object[] { "a0ceb42f-1fbe-49c8-9b5a-2baf41025147", "064606eb-9cfb-4094-8bbe-45952a222f00", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "edd19731-b66d-4a29-8854-9493c503b849", "2c209416-222a-49db-8889-38624e902f39", "Manager", "MANAGER" });
+                values: new object[] { "cbddafe9-eb37-4373-b0d6-91ec5c9476b6", "29265433-b4a3-4d36-b734-2106e18bf7c4", "Manager", "MANAGER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -236,9 +223,6 @@ namespace AuthenticationManager.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "UserPhotos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationManager.Database.Migrations
 {
     [DbContext(typeof(AuthManagerDbContext))]
-    [Migration("20220709054410_InitAuthDatabase")]
+    [Migration("20220723071840_InitAuthDatabase")]
     partial class InitAuthDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,23 +101,6 @@ namespace AuthenticationManager.Database.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("AuthenticationManager.Domain.Models.UserPhoto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PhotoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserPhotos");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -147,15 +130,15 @@ namespace AuthenticationManager.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6a39e814-bcc4-4fe1-bc01-baffc7f111c6",
-                            ConcurrencyStamp = "637124f8-4a61-4698-ad16-e58b29e03828",
+                            Id = "a0ceb42f-1fbe-49c8-9b5a-2baf41025147",
+                            ConcurrencyStamp = "064606eb-9cfb-4094-8bbe-45952a222f00",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "edd19731-b66d-4a29-8854-9493c503b849",
-                            ConcurrencyStamp = "2c209416-222a-49db-8889-38624e902f39",
+                            Id = "cbddafe9-eb37-4373-b0d6-91ec5c9476b6",
+                            ConcurrencyStamp = "29265433-b4a3-4d36-b734-2106e18bf7c4",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
