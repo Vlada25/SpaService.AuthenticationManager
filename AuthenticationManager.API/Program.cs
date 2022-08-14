@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.HttpOverrides;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5002); 
+    options.ListenAnyIP(7002, configure => configure.UseHttps()); 
+});
 
 builder.Services.AddControllers(config =>
 {
@@ -20,7 +25,6 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureDbManagers();
 
 builder.Services.AddMemoryCache();
-builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication();

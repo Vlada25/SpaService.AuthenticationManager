@@ -1,4 +1,5 @@
-﻿using AuthenticationManager.Domain.Models;
+﻿using AuthenticationManager.Database;
+using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces;
 using AutoMapper;
@@ -75,6 +76,17 @@ namespace AuthenticationManager.API.Controllers
             await _userManager.AddToRolesAsync(user, registerUser.Roles);
 
             return StatusCode(201);
+        }
+
+        [HttpPost("{count}")]
+        public async Task<IActionResult> CreateFakeUsers(int count)
+        {
+            var registerUsers = FakeUsersInitializer.GetFakeUsers(count);
+
+            foreach (var user in registerUsers)
+                await Register(user);
+
+            return StatusCode(200);
         }
     }
 }

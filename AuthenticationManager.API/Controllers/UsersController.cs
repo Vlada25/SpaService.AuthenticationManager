@@ -1,4 +1,5 @@
-﻿using AuthenticationManager.DTO.User;
+﻿using AuthenticationManager.Database;
+using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace AuthenticationManager.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepository _repository;
