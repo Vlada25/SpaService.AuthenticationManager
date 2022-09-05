@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AuthenticationManager.Database.Migrations
 {
-    public partial class InitAuthDatabase : Migration
+    public partial class InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,12 +160,17 @@ namespace AuthenticationManager.Database.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a0ceb42f-1fbe-49c8-9b5a-2baf41025147", "064606eb-9cfb-4094-8bbe-45952a222f00", "Admin", "ADMIN" });
+                values: new object[] { "d388b5b2-2d2d-4f6a-ad67-be342da79268", "1721a810-db72-45dd-ba5d-8a5076be8fd5", "Manager", "MANAGER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "cbddafe9-eb37-4373-b0d6-91ec5c9476b6", "29265433-b4a3-4d36-b734-2106e18bf7c4", "Manager", "MANAGER" });
+                values: new object[] { "f15938e3-4bd8-4a02-b1ed-3877b7d42318", "8cf1987e-85f0-4f1d-b2c5-e07357caa4ab", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "fff690b9-2021-445b-85b9-4284550fd39f", "7669eb53-a9db-44de-a961-54f51eec3c48", "Master", "MASTER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

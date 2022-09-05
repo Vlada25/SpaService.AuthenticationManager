@@ -60,8 +60,8 @@ namespace AuthenticationManager.Database
                             MiddleName = _middleNames[middleNameIndex] + "na",
                             UserName = _womanNames[nameIndex].ToLower() + i,
                             Email = _womanNames[nameIndex].ToLower() + i + "@gmail.com",
-                            Password = _womanNames[nameIndex].ToLower() + i + "12345",
-                            ConfirmPassword = _womanNames[nameIndex].ToLower() + i + "12345",
+                            Password = _womanNames[nameIndex].ToLower() + i + "123",
+                            ConfirmPassword = _womanNames[nameIndex].ToLower() + i + "123",
                             Roles = new string[] { }
                         });
                 }

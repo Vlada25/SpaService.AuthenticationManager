@@ -1,8 +1,8 @@
 ﻿using AspNetCoreRateLimit;
+using AuthenticationManager.API.Services;
 using AuthenticationManager.Database;
-using AuthenticationManager.Database.Repositories;
 using AuthenticationManager.Domain.Models;
-using AuthenticationManager.Interfaces;
+using AuthenticationManager.Interfaces.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +39,10 @@ namespace AuthenticationManager.API.Extensions
         public static void ConfigureDbManagers(this IServiceCollection services)
         {
             services.AddScoped<RoleManager<IdentityRole>>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IRolesService, RolesService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -73,11 +75,11 @@ namespace AuthenticationManager.API.Extensions
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    //ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });

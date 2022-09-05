@@ -24,6 +24,11 @@ namespace AuthenticationManager.Domain.Configuration
                 {
                     Name = "Manager",
                     NormalizedName = "MANAGER"
+                },
+                new IdentityRole
+                {
+                    Name = "Master",
+                    NormalizedName = "MASTER"
                 }
             );
         }

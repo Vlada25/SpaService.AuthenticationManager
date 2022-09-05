@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthenticationManager.Interfaces
+namespace AuthenticationManager.Interfaces.Services
 {
     public interface IAuthenticationService
     {

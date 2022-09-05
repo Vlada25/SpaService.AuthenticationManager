@@ -1,6 +1,6 @@
 ﻿using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
-using AuthenticationManager.Interfaces;
+using AuthenticationManager.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

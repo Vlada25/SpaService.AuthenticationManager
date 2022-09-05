@@ -1,51 +1,78 @@
 ﻿using AuthenticationManager.Database;
+using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces;
+using AuthenticationManager.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
-        private readonly IUsersRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IUsersService _usersService;
 
-        public UsersController(IUsersRepository usersRepository,
-            IMapper mapper)
+        public UsersController(IUsersService usersService)
         {
-            _repository = usersRepository;
-            _mapper = mapper;
+            _usersService = usersService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _repository.GetAll(trackChanges: false);
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
+            return Ok(_usersService.GetAll());
+        }
 
-            return Ok(usersDto);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _usersService.GetByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound($"User with login '{id}' doesn't exist in datebase");
+            }
+
+            return Ok(user);
         }
 
         [HttpGet("{login}")]
-        public IActionResult Get(string login)
+        public async Task<IActionResult> GetByLogin(string login)
         {
-            var user = _repository.GetByUserName(login, trackChanges: false);
+            var user = await _usersService.GetByLoginAsync(login);
 
             if (user == null)
             {
                 return NotFound($"User with login '{login}' doesn't exist in datebase");
             }
-            else
+
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            bool isEntityFound = await _usersService.DeleteAsync(id);
+
+            if (!isEntityFound)
             {
-                var userDto = _mapper.Map<UserDto>(user);
-                return Ok(userDto);
+                return NotFound($"Entity with id: {id} doesn't exist in the database.");
             }
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMasters()
+        {
+            var users = _usersService.GetAllMastersAsync();
+
+            return Ok(users);
         }
     }
 }

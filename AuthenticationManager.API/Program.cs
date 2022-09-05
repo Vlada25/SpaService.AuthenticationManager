@@ -68,8 +68,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.All
 });
 
-app.UseIpRateLimiting();
-
 app.UseRouting();
 
 app.UseAuthentication();

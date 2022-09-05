@@ -1,7 +1,8 @@
 ﻿using AuthenticationManager.Database;
+using AuthenticationManager.Domain.Configuration;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
-using AuthenticationManager.Interfaces;
+using AuthenticationManager.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -42,9 +43,7 @@ namespace AuthenticationManager.API.Controllers
                 return Unauthorized("Authentication failed. Wrong user name or password.");
             }
 
-            string token = await _authService.CreateToken();
-
-            return Ok(token);
+            return Ok(new {Token = await _authService.CreateToken()});
         }
 
         [HttpPost]
@@ -75,13 +74,14 @@ namespace AuthenticationManager.API.Controllers
 
             await _userManager.AddToRolesAsync(user, registerUser.Roles);
 
-            return StatusCode(201);
+            return Ok("Registration completed successfully!");
         }
 
         [HttpPost("{count}")]
         public async Task<IActionResult> CreateFakeUsers(int count)
         {
             var registerUsers = FakeUsersInitializer.GetFakeUsers(count);
+            registerUsers.AddRange(UsersConfig.ConfigNecessaryUsers());
 
             foreach (var user in registerUsers)
                 await Register(user);

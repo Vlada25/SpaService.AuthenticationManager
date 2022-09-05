@@ -128,17 +128,24 @@ namespace AuthenticationManager.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a0ceb42f-1fbe-49c8-9b5a-2baf41025147",
-                            ConcurrencyStamp = "064606eb-9cfb-4094-8bbe-45952a222f00",
+                            Id = "f15938e3-4bd8-4a02-b1ed-3877b7d42318",
+                            ConcurrencyStamp = "8cf1987e-85f0-4f1d-b2c5-e07357caa4ab",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cbddafe9-eb37-4373-b0d6-91ec5c9476b6",
-                            ConcurrencyStamp = "29265433-b4a3-4d36-b734-2106e18bf7c4",
+                            Id = "d388b5b2-2d2d-4f6a-ad67-be342da79268",
+                            ConcurrencyStamp = "1721a810-db72-45dd-ba5d-8a5076be8fd5",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "fff690b9-2021-445b-85b9-4284550fd39f",
+                            ConcurrencyStamp = "7669eb53-a9db-44de-a961-54f51eec3c48",
+                            Name = "Master",
+                            NormalizedName = "MASTER"
                         });
                 });
 
