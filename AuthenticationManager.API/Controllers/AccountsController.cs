@@ -19,13 +19,13 @@ namespace AuthenticationManager.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IAuthenticationService _authService;
-        private readonly IHttpPersonService _httpPersonService;
+        private readonly IPersonService _httpPersonService;
 
         public AccountsController(IAuthenticationService authService,
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             IMapper mapper,
-            IHttpPersonService httpPersonService)
+            IPersonService httpPersonService)
         {
             _authService = authService;
             _userManager = userManager;

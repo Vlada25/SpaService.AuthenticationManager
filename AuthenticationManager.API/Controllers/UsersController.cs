@@ -18,11 +18,11 @@ namespace AuthenticationManager.API.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IRolesService _rolesService;
-        private readonly IHttpPersonService _httpPersonService;
+        private readonly IPersonService _httpPersonService;
 
         public UsersController(IUsersService usersService,
             IRolesService rolesService,
-            IHttpPersonService httpPersonService)
+            IPersonService httpPersonService)
         {
             _usersService = usersService;
             _rolesService = rolesService;   

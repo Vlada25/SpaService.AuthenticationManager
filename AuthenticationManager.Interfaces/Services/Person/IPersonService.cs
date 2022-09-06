@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuthenticationManager.Interfaces.Services.Person
 {
-    public interface IHttpPersonService
+    public interface IPersonService
     {
         void CreateClient(RegisterUser registerUser, Guid userId);
         void CreateMaster(RegisterUser registerUser, Guid userId);

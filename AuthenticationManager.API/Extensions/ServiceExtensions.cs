@@ -46,7 +46,7 @@ namespace AuthenticationManager.API.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
 
-            services.AddScoped<IHttpPersonService, HttpPersonService>();
+            services.AddSingleton<IPersonService, HttpPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -118,6 +118,14 @@ namespace AuthenticationManager.API.Extensions
                     }
                 });
             });
+        }
+
+        public static void ConfigureConstants(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            string host = configuration.GetValue<string>("Host");
+
+            services.AddSingleton(host);
         }
     }
 }

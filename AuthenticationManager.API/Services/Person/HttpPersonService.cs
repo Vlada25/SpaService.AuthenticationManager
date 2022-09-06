@@ -4,12 +4,18 @@ using AuthenticationManager.Interfaces.Services.Person;
 
 namespace AuthenticationManager.API.Services.Person
 {
-    public class HttpPersonService : IHttpPersonService
+    public class HttpPersonService : IPersonService
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        private readonly string _clientsHost = "https://localhost:7051/api/Clients/";
-        private readonly string _mastersHost = "https://localhost:7051/api/Masters/";
+        private readonly string _clientsHost;
+        private readonly string _mastersHost;
+
+        public HttpPersonService(string host)
+        {
+            _clientsHost = host + "/Clients/";
+            _mastersHost = host + "/Masters/";
+        }
 
         public void CreateClient(RegisterUser registerUser, Guid userId)
         {
