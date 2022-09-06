@@ -1,8 +1,10 @@
 ﻿using AspNetCoreRateLimit;
 using AuthenticationManager.API.Services;
+using AuthenticationManager.API.Services.Person;
 using AuthenticationManager.Database;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,8 @@ namespace AuthenticationManager.API.Extensions
 
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
+
+            services.AddScoped<IHttpPersonService, HttpPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

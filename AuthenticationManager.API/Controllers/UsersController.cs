@@ -3,6 +3,7 @@ using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +17,16 @@ namespace AuthenticationManager.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
+        private readonly IRolesService _rolesService;
+        private readonly IHttpPersonService _httpPersonService;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService,
+            IRolesService rolesService,
+            IHttpPersonService httpPersonService)
         {
             _usersService = usersService;
+            _rolesService = rolesService;   
+            _httpPersonService = httpPersonService;
         }
 
         [HttpGet]
@@ -57,12 +64,25 @@ namespace AuthenticationManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            bool isEntityFound = await _usersService.DeleteAsync(id);
+            var user = await _usersService.GetByIdAsync(id);
 
-            if (!isEntityFound)
+            if (user == null)
             {
                 return NotFound($"Entity with id: {id} doesn't exist in the database.");
             }
+
+            var userRoles = await _rolesService.GetUserRolesAsync(user.UserName);
+
+            if (userRoles.Contains("Master"))
+            {
+                _httpPersonService.DeleteMaster(id);
+            }
+            else
+            {
+                _httpPersonService.DeleteClient(id);
+            }
+
+            await _usersService.DeleteAsync(id);
 
             return NoContent();
         }

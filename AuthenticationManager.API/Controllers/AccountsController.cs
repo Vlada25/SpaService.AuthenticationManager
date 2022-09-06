@@ -3,6 +3,7 @@ using AuthenticationManager.Domain.Configuration;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,16 +19,19 @@ namespace AuthenticationManager.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IAuthenticationService _authService;
+        private readonly IHttpPersonService _httpPersonService;
 
         public AccountsController(IAuthenticationService authService,
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            IMapper mapper)
+            IMapper mapper,
+            IHttpPersonService httpPersonService)
         {
             _authService = authService;
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+            _httpPersonService = httpPersonService;
         }
 
         [HttpPost]
@@ -73,6 +77,15 @@ namespace AuthenticationManager.API.Controllers
             }
 
             await _userManager.AddToRolesAsync(user, registerUser.Roles);
+
+            if (registerUser.Roles.Contains("Master"))
+            {
+                _httpPersonService.CreateMaster(registerUser, Guid.Parse(user.Id));
+            }
+            else
+            {
+                _httpPersonService.CreateClient(registerUser, Guid.Parse(user.Id));
+            }
 
             return Ok("Registration completed successfully!");
         }

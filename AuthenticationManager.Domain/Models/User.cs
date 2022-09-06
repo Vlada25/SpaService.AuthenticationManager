@@ -9,8 +9,6 @@ namespace AuthenticationManager.Domain.Models
 {
     public class User : IdentityUser
     {
-        public string Surname { get; set; }
-        public string Name { get; set; }
-        public string MiddleName { get; set; }
+
     }
 }
