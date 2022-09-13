@@ -1,13 +1,5 @@
-﻿using AuthenticationManager.Database;
-using AuthenticationManager.Domain.Models;
-using AuthenticationManager.DTO.User;
-using AuthenticationManager.Interfaces;
-using AuthenticationManager.Interfaces.Services;
+﻿using AuthenticationManager.Interfaces.Services;
 using AuthenticationManager.Interfaces.Services.Person;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers
@@ -25,7 +17,7 @@ namespace AuthenticationManager.API.Controllers
             IPersonService httpPersonService)
         {
             _usersService = usersService;
-            _rolesService = rolesService;   
+            _rolesService = rolesService;
             _httpPersonService = httpPersonService;
         }
 

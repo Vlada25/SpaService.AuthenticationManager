@@ -17,7 +17,7 @@ namespace AuthenticationManager.API.Services.Person
             _mastersHost = host + "/Masters/";
         }
 
-        public void CreateClient(RegisterUser registerUser, Guid userId)
+        public async Task CreateClient(RegisterUser registerUser, Guid userId)
         {
             PersonForCreation person = new PersonForCreation
             {
@@ -28,10 +28,10 @@ namespace AuthenticationManager.API.Services.Person
                 UserId = userId
             };
 
-            _httpClient.PostAsJsonAsync(_clientsHost + "Create", person);
+            await _httpClient.PostAsJsonAsync(_clientsHost + "Create", person);
         }
 
-        public void CreateMaster(RegisterUser registerUser, Guid userId)
+        public async Task CreateMaster(RegisterUser registerUser, Guid userId)
         {
             PersonForCreation person = new PersonForCreation
             {
@@ -42,17 +42,17 @@ namespace AuthenticationManager.API.Services.Person
                 UserId = userId
             };
 
-            _httpClient.PostAsJsonAsync(_mastersHost + "Create", person);
+            await _httpClient.PostAsJsonAsync(_mastersHost + "Create", person);
         }
 
-        public void DeleteClient(Guid userId)
+        public async Task DeleteClient(Guid userId)
         {
-            _httpClient.DeleteAsync(_clientsHost + $"DeleteByUserId/{userId}");
+            await _httpClient.DeleteAsync(_clientsHost + $"DeleteByUserId/{userId}");
         }
 
-        public void DeleteMaster(Guid userId)
+        public async Task DeleteMaster(Guid userId)
         {
-            _httpClient.DeleteAsync(_mastersHost + $"DeleteByUserId/{userId}");
+            await _httpClient.DeleteAsync(_mastersHost + $"DeleteByUserId/{userId}");
         }
     }
 }

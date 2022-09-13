@@ -1,9 +1,4 @@
-﻿using AuthenticationManager.Domain.Models;
-using AuthenticationManager.Interfaces;
-using AuthenticationManager.Interfaces.Services;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using AuthenticationManager.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers

@@ -1,4 +1,3 @@
-using AspNetCoreRateLimit;
 using AuthenticationManager.API.Extensions;
 using AuthenticationManager.Domain;
 using AutoMapper;
@@ -9,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5002); 
-    options.ListenAnyIP(7002, configure => configure.UseHttps()); 
+    options.ListenAnyIP(5002);
+    options.ListenAnyIP(7002, configure => configure.UseHttps());
 });
 
 builder.Services.AddControllers(config =>
@@ -20,6 +19,7 @@ builder.Services.AddControllers(config =>
 }).AddNewtonsoftJson();
 
 builder.Services.ConfigureConstants(builder.Configuration);
+builder.Services.ConfigureMessageBroker(builder.Configuration);
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();

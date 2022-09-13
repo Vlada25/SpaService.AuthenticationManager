@@ -1,6 +1,7 @@
 ﻿using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,12 +11,15 @@ namespace AuthenticationManager.API.Services
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly IPersonService _personService;
 
         public UsersService(UserManager<User> userManager,
-            IMapper mapper)
+            IMapper mapper,
+            IPersonService personService)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _personService = personService;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
@@ -28,6 +32,17 @@ namespace AuthenticationManager.API.Services
             }
 
             await _userManager.DeleteAsync(user);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (userRoles.Contains("Master"))
+            {
+                await _personService.DeleteMaster(id);
+            }
+            else
+            {
+                await _personService.DeleteMaster(id);
+            }
 
             return true;
         }

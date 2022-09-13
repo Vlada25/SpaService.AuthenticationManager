@@ -1,15 +1,16 @@
-﻿using AspNetCoreRateLimit;
-using AuthenticationManager.API.Services;
+﻿using AuthenticationManager.API.Services;
 using AuthenticationManager.API.Services.Person;
 using AuthenticationManager.Database;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.Interfaces.Services;
 using AuthenticationManager.Interfaces.Services.Person;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SpaService.Domain.Configuration;
 using System.Text;
 
 namespace AuthenticationManager.API.Extensions
@@ -46,7 +47,7 @@ namespace AuthenticationManager.API.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
 
-            services.AddSingleton<IPersonService, HttpPersonService>();
+            services.AddScoped<IPersonService, MesBrokerPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -70,7 +71,8 @@ namespace AuthenticationManager.API.Extensions
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
-            services.AddAuthentication(opt => {
+            services.AddAuthentication(opt =>
+            {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -126,6 +128,27 @@ namespace AuthenticationManager.API.Extensions
             string host = configuration.GetValue<string>("Host");
 
             services.AddSingleton(host);
+        }
+
+        public static void ConfigureMessageBroker(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var messagingConfig = configuration.GetSection("Messaging");
+            services.Configure<MessagingConfig>(messagingConfig);
+
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(messagingConfig["Hostname"], "/", h =>
+                    {
+                        h.Username(messagingConfig["UserName"]);
+                        h.Password(messagingConfig["Password"]);
+                    });
+
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
         }
     }
 }

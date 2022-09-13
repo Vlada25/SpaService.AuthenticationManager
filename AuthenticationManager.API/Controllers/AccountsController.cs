@@ -5,7 +5,6 @@ using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces.Services;
 using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,19 +18,19 @@ namespace AuthenticationManager.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IAuthenticationService _authService;
-        private readonly IPersonService _httpPersonService;
+        private readonly IPersonService _personService;
 
         public AccountsController(IAuthenticationService authService,
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             IMapper mapper,
-            IPersonService httpPersonService)
+            IPersonService personService)
         {
             _authService = authService;
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
-            _httpPersonService = httpPersonService;
+            _personService = personService;
         }
 
         [HttpPost]
@@ -47,7 +46,7 @@ namespace AuthenticationManager.API.Controllers
                 return Unauthorized("Authentication failed. Wrong user name or password.");
             }
 
-            return Ok(new {Token = await _authService.CreateToken()});
+            return Ok(new { Token = await _authService.CreateToken() });
         }
 
         [HttpPost]
@@ -80,11 +79,11 @@ namespace AuthenticationManager.API.Controllers
 
             if (registerUser.Roles.Contains("Master"))
             {
-                _httpPersonService.CreateMaster(registerUser, Guid.Parse(user.Id));
+                await _personService.CreateMaster(registerUser, Guid.Parse(user.Id));
             }
             else
             {
-                _httpPersonService.CreateClient(registerUser, Guid.Parse(user.Id));
+                await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
             }
 
             return Ok("Registration completed successfully!");
