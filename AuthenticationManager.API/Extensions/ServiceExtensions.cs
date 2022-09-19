@@ -133,22 +133,7 @@ namespace AuthenticationManager.API.Extensions
         public static void ConfigureMessageBroker(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var messagingConfig = configuration.GetSection("Messaging");
-            services.Configure<MessagingConfig>(messagingConfig);
-
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq((context, cfg) =>
-                {
-                    cfg.Host(messagingConfig["Hostname"], "/", h =>
-                    {
-                        h.Username(messagingConfig["UserName"]);
-                        h.Password(messagingConfig["Password"]);
-                    });
-
-                    cfg.ConfigureEndpoints(context);
-                });
-            });
+            services.ConfigureMessageBroker(configuration, consumersConfig => {});
         }
     }
 }
