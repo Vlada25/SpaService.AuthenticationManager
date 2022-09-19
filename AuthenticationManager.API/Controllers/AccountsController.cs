@@ -89,6 +89,27 @@ namespace AuthenticationManager.API.Controllers
             return Ok("Registration completed successfully!");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUser registerUser)
+        {
+            var user = _mapper.Map<User>(registerUser);
+
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
+            await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
+
+            return Ok("Registration completed successfully!");
+        }
+
         [HttpPost("{count}")]
         public async Task<IActionResult> CreateFakeUsers(int count)
         {

@@ -10,6 +10,7 @@ namespace AuthenticationManager.Domain
         {
             CreateMap<User, UserDto>();
             CreateMap<RegisterUser, User>();
+            CreateMap<RegisterClientUser, User>();
         }
     }
 }

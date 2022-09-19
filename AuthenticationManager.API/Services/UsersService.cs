@@ -4,6 +4,7 @@ using AuthenticationManager.Interfaces.Services;
 using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationManager.API.Services
 {
@@ -47,9 +48,9 @@ namespace AuthenticationManager.API.Services
             return true;
         }
 
-        public IEnumerable<UserDto> GetAll()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            var users = _userManager.Users;
+            var users = await _userManager.Users.ToListAsync();
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
 
             return usersDto;

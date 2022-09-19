@@ -31,6 +31,20 @@ namespace AuthenticationManager.API.Services.Person
             await _httpClient.PostAsJsonAsync(_clientsHost + "Create", person);
         }
 
+        public async Task CreateClient(RegisterClientUser registerUser, Guid userId)
+        {
+            PersonForCreation person = new PersonForCreation
+            {
+                Name = registerUser.Name,
+                Surname = registerUser.Surname,
+                MiddleName = registerUser.MiddleName,
+                PhoneNumber = "",
+                UserId = userId
+            };
+
+            await _httpClient.PostAsJsonAsync(_clientsHost + "Create", person);
+        }
+
         public async Task CreateMaster(RegisterUser registerUser, Guid userId)
         {
             PersonForCreation person = new PersonForCreation

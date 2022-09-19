@@ -26,6 +26,19 @@ namespace AuthenticationManager.API.Services.Person
             await _publishEndpoint.Publish(user);
         }
 
+        public async Task CreateClient(RegisterClientUser registerUser, Guid userId)
+        {
+            UserClientCreated user = new UserClientCreated
+            {
+                Id = userId,
+                Surname = registerUser.Surname,
+                Name = registerUser.Name,
+                MiddleName = registerUser.MiddleName
+            };
+
+            await _publishEndpoint.Publish(user);
+        }
+
         public async Task CreateMaster(RegisterUser registerUser, Guid userId)
         {
             UserMasterCreated user = new UserMasterCreated

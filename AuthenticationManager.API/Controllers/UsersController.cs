@@ -10,7 +10,6 @@ namespace AuthenticationManager.API.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IRolesService _rolesService;
-        private readonly IPersonService _httpPersonService;
 
         public UsersController(IUsersService usersService,
             IRolesService rolesService,
@@ -18,13 +17,12 @@ namespace AuthenticationManager.API.Controllers
         {
             _usersService = usersService;
             _rolesService = rolesService;
-            _httpPersonService = httpPersonService;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_usersService.GetAll());
+            return Ok(await _usersService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
@@ -56,25 +54,12 @@ namespace AuthenticationManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var user = await _usersService.GetByIdAsync(id);
+            var isEntityFound = await _usersService.DeleteAsync(id);
 
-            if (user == null)
+            if (isEntityFound)
             {
                 return NotFound($"Entity with id: {id} doesn't exist in the database.");
             }
-
-            var userRoles = await _rolesService.GetUserRolesAsync(user.UserName);
-
-            if (userRoles.Contains("Master"))
-            {
-                _httpPersonService.DeleteMaster(id);
-            }
-            else
-            {
-                _httpPersonService.DeleteClient(id);
-            }
-
-            await _usersService.DeleteAsync(id);
 
             return NoContent();
         }
@@ -82,7 +67,7 @@ namespace AuthenticationManager.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMasters()
         {
-            var users = _usersService.GetAllMastersAsync();
+            var users = await _usersService.GetAllMastersAsync();
 
             return Ok(users);
         }
