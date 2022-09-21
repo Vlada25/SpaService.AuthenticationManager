@@ -4,19 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        private readonly IRolesService _rolesService;
 
         public UsersController(IUsersService usersService,
-            IRolesService rolesService,
-            IPersonService httpPersonService)
+            IRolesService rolesService)
         {
             _usersService = usersService;
-            _rolesService = rolesService;
         }
 
         [HttpGet]
@@ -62,14 +59,6 @@ namespace AuthenticationManager.API.Controllers
             }
 
             return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllMasters()
-        {
-            var users = await _usersService.GetAllMastersAsync();
-
-            return Ok(users);
         }
     }
 }

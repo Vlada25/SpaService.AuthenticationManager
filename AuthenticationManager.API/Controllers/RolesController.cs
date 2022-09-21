@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
     {
