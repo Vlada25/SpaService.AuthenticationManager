@@ -1,9 +1,4 @@
 ﻿using AuthenticationManager.DTO.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuthenticationManager.Database
 {
@@ -79,7 +74,7 @@ namespace AuthenticationManager.Database
                             Email = _manNames[nameIndex].ToLower() + i + "@gmail.com",
                             Password = _manNames[nameIndex].ToLower() + i + "12345",
                             ConfirmPassword = _manNames[nameIndex].ToLower() + i + "12345",
-                            Roles = new string[] {}
+                            Roles = new string[] { }
                         });
                 }
             }

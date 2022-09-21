@@ -3,8 +3,8 @@ using AuthenticationManager.Domain.Configuration;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.DTO.User;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,16 +18,19 @@ namespace AuthenticationManager.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IAuthenticationService _authService;
+        private readonly IPersonService _personService;
 
         public AccountsController(IAuthenticationService authService,
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            IMapper mapper)
+            IMapper mapper,
+            IPersonService personService)
         {
             _authService = authService;
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+            _personService = personService;
         }
 
         [HttpPost]
@@ -43,7 +46,7 @@ namespace AuthenticationManager.API.Controllers
                 return Unauthorized("Authentication failed. Wrong user name or password.");
             }
 
-            return Ok(new {Token = await _authService.CreateToken()});
+            return Ok(new { Token = await _authService.CreateToken() });
         }
 
         [HttpPost]
@@ -73,6 +76,36 @@ namespace AuthenticationManager.API.Controllers
             }
 
             await _userManager.AddToRolesAsync(user, registerUser.Roles);
+
+            if (registerUser.Roles.Contains("Master"))
+            {
+                await _personService.CreateMaster(registerUser, Guid.Parse(user.Id));
+            }
+            else
+            {
+                await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
+            }
+
+            return Ok("Registration completed successfully!");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUser registerUser)
+        {
+            var user = _mapper.Map<User>(registerUser);
+
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
+            await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
 
             return Ok("Registration completed successfully!");
         }

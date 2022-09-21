@@ -1,13 +1,16 @@
-﻿using AspNetCoreRateLimit;
-using AuthenticationManager.API.Services;
+﻿using AuthenticationManager.API.Services;
+using AuthenticationManager.API.Services.Person;
 using AuthenticationManager.Database;
 using AuthenticationManager.Domain.Models;
 using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SpaService.Domain.Configuration;
 using System.Text;
 
 namespace AuthenticationManager.API.Extensions
@@ -43,6 +46,8 @@ namespace AuthenticationManager.API.Extensions
 
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
+
+            services.AddScoped<IPersonService, MesBrokerPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -66,7 +71,8 @@ namespace AuthenticationManager.API.Extensions
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
-            services.AddAuthentication(opt => {
+            services.AddAuthentication(opt =>
+            {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -114,6 +120,20 @@ namespace AuthenticationManager.API.Extensions
                     }
                 });
             });
+        }
+
+        public static void ConfigureConstants(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            string host = configuration.GetValue<string>("Host");
+
+            services.AddSingleton(host);
+        }
+
+        public static void ConfigureMessageBroker(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.ConfigureMessageBroker(configuration, consumersConfig => {});
         }
     }
 }

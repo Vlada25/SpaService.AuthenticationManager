@@ -1,12 +1,5 @@
-﻿using AuthenticationManager.Database;
-using AuthenticationManager.Domain.Models;
-using AuthenticationManager.DTO.User;
-using AuthenticationManager.Interfaces;
-using AuthenticationManager.Interfaces.Services;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using AuthenticationManager.Interfaces.Services;
+using AuthenticationManager.Interfaces.Services.Person;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationManager.API.Controllers
@@ -16,16 +9,20 @@ namespace AuthenticationManager.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
+        private readonly IRolesService _rolesService;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService,
+            IRolesService rolesService,
+            IPersonService httpPersonService)
         {
             _usersService = usersService;
+            _rolesService = rolesService;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_usersService.GetAll());
+            return Ok(await _usersService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
@@ -57,9 +54,9 @@ namespace AuthenticationManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            bool isEntityFound = await _usersService.DeleteAsync(id);
+            var isEntityFound = await _usersService.DeleteAsync(id);
 
-            if (!isEntityFound)
+            if (isEntityFound)
             {
                 return NotFound($"Entity with id: {id} doesn't exist in the database.");
             }
@@ -70,7 +67,7 @@ namespace AuthenticationManager.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMasters()
         {
-            var users = _usersService.GetAllMastersAsync();
+            var users = await _usersService.GetAllMastersAsync();
 
             return Ok(users);
         }
