@@ -5,14 +5,15 @@ using SpaService.Domain.Messages.User;
 
 namespace AuthenticationManager.API.Services.Person
 {
-    public class MesBrokerPersonService : IPersonService
+    public class RabbitMqPersonService : IPersonService
     {
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public MesBrokerPersonService(IPublishEndpoint publishEndpoint)
+        public RabbitMqPersonService(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
         }
+
         public async Task CreateClient(RegisterUser registerUser, Guid userId)
         {
             UserClientCreated user = new UserClientCreated

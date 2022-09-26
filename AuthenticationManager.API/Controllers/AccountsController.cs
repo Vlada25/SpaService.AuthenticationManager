@@ -33,7 +33,7 @@ namespace AuthenticationManager.API.Controllers
             _personService = personService;
         }
 
-        [HttpPost("api/[controller]/Login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
             if (loginUser == null)
@@ -49,7 +49,7 @@ namespace AuthenticationManager.API.Controllers
             return Ok(new { Token = await _authService.CreateToken() });
         }
 
-        [HttpPost("api/[controller]/Register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
             var user = _mapper.Map<User>(registerUser);
@@ -89,7 +89,7 @@ namespace AuthenticationManager.API.Controllers
             return Ok("Registration completed successfully!");
         }
 
-        [HttpPost("api/[controller]/Clients/Register")]
+        [HttpPost("Clients/Register")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUser registerUser)
         {
             var user = _mapper.Map<User>(registerUser);
@@ -110,11 +110,11 @@ namespace AuthenticationManager.API.Controllers
             return Ok("Registration completed successfully!");
         }
 
-        [HttpPost("api/[controller]/FakeUsers/{count}")]
+        [HttpPost("FakeUsers/{count}")]
         public async Task<IActionResult> CreateFakeUsers(int count)
         {
             var registerUsers = FakeUsersInitializer.GetFakeUsers(count);
-            registerUsers.AddRange(UsersConfig.ConfigNecessaryUsers());
+            //registerUsers.AddRange(UsersConfig.ConfigNecessaryUsers());
 
             foreach (var user in registerUsers)
                 await Register(user);

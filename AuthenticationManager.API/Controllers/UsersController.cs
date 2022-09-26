@@ -53,7 +53,7 @@ namespace AuthenticationManager.API.Controllers
         {
             var isEntityFound = await _usersService.DeleteAsync(id);
 
-            if (isEntityFound)
+            if (!isEntityFound)
             {
                 return NotFound($"Entity with id: {id} doesn't exist in the database.");
             }

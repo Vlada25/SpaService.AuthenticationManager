@@ -47,7 +47,7 @@ namespace AuthenticationManager.API.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
 
-            services.AddScoped<IPersonService, MesBrokerPersonService>();
+            services.AddScoped<IPersonService, RabbitMqPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
