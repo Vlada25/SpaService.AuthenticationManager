@@ -5,11 +5,11 @@ using SpaService.Domain.Messages.User;
 
 namespace AuthenticationManager.API.Services.Person
 {
-    public class RabbitMqPersonService : IPersonService
+    public class MessageBrokerPersonService : IPersonService
     {
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public RabbitMqPersonService(IPublishEndpoint publishEndpoint)
+        public MessageBrokerPersonService(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
         }

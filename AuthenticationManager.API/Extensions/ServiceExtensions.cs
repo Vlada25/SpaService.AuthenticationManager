@@ -39,7 +39,7 @@ namespace AuthenticationManager.API.Extensions
                     b.MigrationsAssembly("AuthenticationManager.Database")));
         }
 
-        public static void ConfigureDbManagers(this IServiceCollection services)
+        public static void ConfigureDbManagers(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<RoleManager<IdentityRole>>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -47,7 +47,7 @@ namespace AuthenticationManager.API.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IRolesService, RolesService>();
 
-            services.AddScoped<IPersonService, RabbitMqPersonService>();
+            services.AddScoped<IPersonService, MessageBrokerPersonService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
