@@ -24,7 +24,7 @@ builder.Services.ConfigureMessageBroker(builder.Configuration);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.ConfigureDbManagers();
+builder.Services.ConfigureDbManagers(builder.Configuration);
 
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();

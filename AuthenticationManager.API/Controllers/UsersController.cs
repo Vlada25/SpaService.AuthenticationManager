@@ -22,7 +22,7 @@ namespace AuthenticationManager.API.Controllers
             return Ok(await _usersService.GetAllAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _usersService.GetByIdAsync(id);
@@ -35,7 +35,7 @@ namespace AuthenticationManager.API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("{login}")]
+        [HttpGet("ByLogin/{login}")]
         public async Task<IActionResult> GetByLogin(string login)
         {
             var user = await _usersService.GetByLoginAsync(login);

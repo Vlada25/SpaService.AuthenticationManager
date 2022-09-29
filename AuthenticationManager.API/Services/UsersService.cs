@@ -42,7 +42,7 @@ namespace AuthenticationManager.API.Services
             }
             else
             {
-                await _personService.DeleteMaster(id);
+                await _personService.DeleteClient(id);
             }
 
             return true;
