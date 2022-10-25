@@ -40,14 +40,15 @@ namespace AuthenticationManager.API.Services.Person
             await _publishEndpoint.Publish(user);
         }
 
-        public async Task CreateMaster(RegisterUser registerUser, Guid userId)
+        public async Task CreateMaster(RegisterMasterUser registerUser, Guid userId)
         {
             UserMasterCreated user = new UserMasterCreated
             {
                 Id = userId,
                 Surname = registerUser.Surname,
                 Name = registerUser.Name,
-                MiddleName = registerUser.MiddleName
+                MiddleName = registerUser.MiddleName,
+                AddressId = registerUser.AddressId
             };
 
             await _publishEndpoint.Publish(user);

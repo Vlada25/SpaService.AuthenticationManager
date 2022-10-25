@@ -7,6 +7,7 @@ using AuthenticationManager.Interfaces.Services.Person;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AuthenticationManager.API.Controllers
 {
@@ -77,14 +78,7 @@ namespace AuthenticationManager.API.Controllers
 
             await _userManager.AddToRolesAsync(user, registerUser.Roles);
 
-            if (registerUser.Roles.Contains("Master"))
-            {
-                await _personService.CreateMaster(registerUser, Guid.Parse(user.Id));
-            }
-            else
-            {
-                await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
-            }
+            await _personService.CreateClient(registerUser, Guid.Parse(user.Id));
 
             return Ok("Registration completed successfully!");
         }
@@ -110,16 +104,62 @@ namespace AuthenticationManager.API.Controllers
             return Ok("Registration completed successfully!");
         }
 
+        [HttpPost("Masters/Register")]
+        public async Task<IActionResult> RegisterMaster([FromBody] RegisterMasterUser registerUser)
+        {
+            var user = _mapper.Map<User>(registerUser);
+
+            foreach (var roleName in registerUser.Roles)
+            {
+                var roleResult = await _roleManager.RoleExistsAsync(roleName);
+
+                if (!roleResult)
+                {
+                    return BadRequest($"Role {roleName} is not exist");
+                }
+            }
+
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
+            await _userManager.AddToRolesAsync(user, registerUser.Roles);
+
+            await _personService.CreateMaster(registerUser, Guid.Parse(user.Id));
+
+            return Ok(user);
+        }
+
         [HttpPost("FakeUsers/{count}")]
         public async Task<IActionResult> CreateFakeUsers(int count)
         {
-            var registerUsers = FakeUsersInitializer.GetFakeUsers(count);
-            //registerUsers.AddRange(UsersConfig.ConfigNecessaryUsers());
+            var registerUsers = FakeUsersInitializer.GetFakeClients(count);
+            registerUsers.AddRange(UsersConfig.ConfigNecessaryUsers());
+            var registerMasters = FakeUsersInitializer.GetFakeMasters(count);
 
             foreach (var user in registerUsers)
                 await Register(user);
 
-            return StatusCode(200);
+            foreach (var user in registerMasters)
+                await RegisterMaster(user);
+
+            return Ok();
+        }
+
+        [HttpGet("Token/Info")]
+        public IActionResult GetTokenInfo()
+        {
+            var roles = HttpContext.User.Claims
+                .Where(claim => claim.Type.Equals(ClaimTypes.Role))
+                .Select(claim => claim.Value);
+            return Ok(roles);
         }
     }
 }
